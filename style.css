@@ -90,7 +90,7 @@ header {
   align-items: center;
   padding: 5px;
   margin: 10px;
-  width: 200px;
+  width: 98%;
 }
 
 .amount-counter button {
@@ -129,7 +129,7 @@ header {
   color: rgba(50, 44, 44, 0.7);
 }
 
-/******* Left Part *******/
+/******* Contact Information *******/
 
 .form {
   padding: 30px 30px;
