@@ -109,23 +109,25 @@ const bottomPart = document.querySelector(".bottom-container");
 removeButton.forEach((element, index) => [
   element.addEventListener("click", () => {
     removeButton[index].closest(".products").remove();
-    if (index === removeButton.length - 1) {
-      bottomPart.remove();
-    }
+    if (document.querySelectorAll('.products').length === 0) {
+      bottomPart.remove()}
   }),
 ]);
 
 increaseButton.forEach((element, index) => {
   element.addEventListener("click", () => {
     amount[index].innerText = parseInt(amount[index].innerText) + 1;
+
     amountDisplay = Number(amount[index].innerText);
+
     productPrice[index].innerText = (
-      amountDisplay * Number(price[index].innerText)
+    amountDisplay * Number(price[index].innerText)
     ).toFixed(2);
+
     subtotal.innerText = (
-      Number(subtotal.innerText) + Number(price[index].innerText)
+    Number(subtotal.innerText) + Number(price[index].innerText)
     ).toFixed(2);
-    console.log(taxPrice.innerText);
+
     taxPrice.innerText = (Number(subtotal.innerText) * 0.18).toFixed(2);
 
     totalPrice.innerText = (
@@ -134,7 +136,6 @@ increaseButton.forEach((element, index) => {
       Number(shipment.innerText)
     ).toFixed(2);
 
-    console.log(totalPrice.innerText);
   });
 });
 
@@ -142,8 +143,6 @@ decreaseButton.forEach((element, index) => {
   element.addEventListener("click", () => {
     if (amountDisplay > 1) {
       amount[index].innerText = parseInt(amount[index].innerText) - 1;
-      console.log(amount[index]);
-      console.log(price[index]);
       amountDisplay = Number(amount[index].innerText).toFixed(2);
       productPrice[index].innerText = (
         amountDisplay * Number(price[index].innerText)
