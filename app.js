@@ -94,7 +94,6 @@ function isEmail(email) {
 
 // Checkout part
 
-
 const removeButton = document.querySelectorAll(".btn-remove");
 const decreaseButton = document.querySelectorAll(".decrease");
 const amount = document.querySelectorAll(".amount");
@@ -107,49 +106,60 @@ const shipment = document.querySelector(".bottom-shipping-price");
 const totalPrice = document.querySelector(".bottom-total-price");
 const bottomPart = document.querySelector(".bottom-container");
 
-
 increaseButton.forEach((element, index) => {
   element.addEventListener("click", () => {
     amount[index].innerText = parseInt(amount[index].innerText) + 1;
-
     amountDisplay = Number(amount[index].innerText);
-
     productPrice[index].innerText = (
       amountDisplay * Number(price[index].innerText)
     ).toFixed(2);
-
     subtotal.innerText = (
       Number(subtotal.innerText) + Number(price[index].innerText)
     ).toFixed(2);
-  
+
     taxPrice.innerText = (Number(subtotal.innerText) * 0.18).toFixed(2);
+    shipment.innerText = 15;
 
     totalPrice.innerText = (
       Number(subtotal.innerText) +
       Number(taxPrice.innerText) +
       Number(shipment.innerText)
     ).toFixed(2);
-
   });
 });
 
 decreaseButton.forEach((element, index) => {
   element.addEventListener("click", () => {
-    if (amountDisplay > 1) {
+    amountDisplay = Number(amount[index].innerText);
+    if (amountDisplay > 0) {
       amount[index].innerText = parseInt(amount[index].innerText) - 1;
-
+      console.log(amount[index]);
+      console.log(price[index]);
       amountDisplay = Number(amount[index].innerText).toFixed(2);
-
       productPrice[index].innerText = (
         amountDisplay * Number(price[index].innerText)
       ).toFixed(2);
-
       subtotal.innerText = (
         Number(subtotal.innerText) - Number(price[index].innerText)
       ).toFixed(2);
 
       taxPrice.innerText = (Number(subtotal.innerText) * 0.18).toFixed(2);
-      
+
+      console.log(amount);
+
+      let allAmountsAreZero = true;
+      const amountLeft = document.querySelectorAll(".amount");
+      amountLeft.forEach((element) => {
+        if (element.innerText !== "0") {
+          allAmountsAreZero = false;
+          return;
+        }
+      });
+
+      if (allAmountsAreZero) {
+        shipment.innerText = 0;
+      }
+
       totalPrice.innerText = (
         Number(subtotal.innerText) +
         Number(taxPrice.innerText) +
@@ -159,18 +169,45 @@ decreaseButton.forEach((element, index) => {
   });
 });
 
-removeButton.forEach((element, index) => [
+removeButton.forEach((element, index) => {
   element.addEventListener("click", () => {
-    let productTotal = removeButton[index].closest(".products").querySelector(".product-price");
+    let productTotal = removeButton[index]
+      .closest(".products")
+      .querySelector(".product-price");
     let productPrice = Number(productTotal.innerText);
-    removeButton[index].closest(".products").remove();
+    if (confirm("Are you sure to remove?")) {
+      removeButton[index].closest(".products").remove();
+      subtotal.innerText = (Number(subtotal.innerText) - productPrice).toFixed(
+        2
+      );
+      taxPrice.innerText = (Number(subtotal.innerText) * 0.18).toFixed(2);
+      totalPrice.innerText = (
+        Number(subtotal.innerText) +
+        Number(taxPrice.innerText) +
+        Number(shipment.innerText)
+      ).toFixed(2);
+    }
+    let allAmountsAreZero = true;
+    const amountLeft = document.querySelectorAll(".amount");
+    amountLeft.forEach((element) => {
+      if (element.innerText !== "0") {
+        allAmountsAreZero = false;
+        return;
+      }
+    });
 
-    subtotal.innerText = ( Number(subtotal.innerText) - productPrice ).toFixed(2);
-    taxPrice.innerText = (Number(subtotal.innerText) * 0.18).toFixed(2);
-    totalPrice.innerText = ( Number(subtotal.innerText) + Number(taxPrice.innerText) + Number(shipment.innerText) ).toFixed(2);
-  
-    if (document.querySelectorAll('.products').length === 0) {
-      bottomPart.remove()
-    } 
-  }),
-]);
+    if (allAmountsAreZero) {
+      shipment.innerText = 0;
+    }
+
+    if (document.querySelectorAll(".products").length === 0) {
+      bottomPart.remove();
+    }
+
+    totalPrice.innerText = (
+      Number(subtotal.innerText) +
+      Number(taxPrice.innerText) +
+      Number(shipment.innerText)
+    ).toFixed(2);
+  });
+});
