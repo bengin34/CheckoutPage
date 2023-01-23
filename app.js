@@ -116,10 +116,8 @@ increaseButton.forEach((element, index) => {
     subtotal.innerText = (
       Number(subtotal.innerText) + Number(price[index].innerText)
     ).toFixed(2);
-
     taxPrice.innerText = (Number(subtotal.innerText) * 0.18).toFixed(2);
     shipment.innerText = 15;
-
     totalPrice.innerText = (
       Number(subtotal.innerText) +
       Number(taxPrice.innerText) +
@@ -131,10 +129,8 @@ increaseButton.forEach((element, index) => {
 decreaseButton.forEach((element, index) => {
   element.addEventListener("click", () => {
     amountDisplay = Number(amount[index].innerText);
-    if (amountDisplay > 0) {
+    if (amountDisplay > 1) {
       amount[index].innerText = parseInt(amount[index].innerText) - 1;
-      console.log(amount[index]);
-      console.log(price[index]);
       amountDisplay = Number(amount[index].innerText).toFixed(2);
       productPrice[index].innerText = (
         amountDisplay * Number(price[index].innerText)
@@ -142,29 +138,36 @@ decreaseButton.forEach((element, index) => {
       subtotal.innerText = (
         Number(subtotal.innerText) - Number(price[index].innerText)
       ).toFixed(2);
-
       taxPrice.innerText = (Number(subtotal.innerText) * 0.18).toFixed(2);
-
-      console.log(amount);
-
-      let allAmountsAreZero = true;
-      const amountLeft = document.querySelectorAll(".amount");
-      amountLeft.forEach((element) => {
-        if (element.innerText !== "0") {
-          allAmountsAreZero = false;
-          return;
-        }
-      });
-
-      if (allAmountsAreZero) {
-        shipment.innerText = 0;
-      }
-
       totalPrice.innerText = (
         Number(subtotal.innerText) +
         Number(taxPrice.innerText) +
         Number(shipment.innerText)
       ).toFixed(2);
+    }
+    if(amountDisplay === 1){
+      if (confirm("Are you sure to remove?")) {
+        removeButton[index].closest(".products").remove();
+        amountDisplay = Number(amount[index].innerText).toFixed(2);
+        productPrice[index].innerText = (
+          amountDisplay * Number(price[index].innerText)
+        ).toFixed(2);
+        subtotal.innerText = (
+          Number(subtotal.innerText) - Number(price[index].innerText)
+        ).toFixed(2);
+  
+        taxPrice.innerText = (Number(subtotal.innerText) * 0.18).toFixed(2);
+  
+  
+        totalPrice.innerText = (
+          Number(subtotal.innerText) +
+          Number(taxPrice.innerText) +
+          Number(shipment.innerText)
+        ).toFixed(2);
+        if (document.querySelectorAll(".products").length === 0) {
+          bottomPart.remove();
+        }
+      }
     }
   });
 });
